@@ -1,8 +1,9 @@
+local Config = require("src.config")
 local Game = require("src.game")
 
 function love.load()
     love.window.setTitle("Neon Miko: Oni Gate")
-    love.window.setMode(960, 540, {resizable = false, vsync = 1})
+    love.window.setMode(Config.window.width, Config.window.height, {resizable = false, vsync = 1})
     love.graphics.setDefaultFilter("nearest", "nearest")
     Game.load()
 end

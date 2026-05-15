@@ -56,17 +56,31 @@ function Base:update(dt, world)
 end
 
 function Base:draw()
+    local cx, cy = self.x+self.w/2, self.y+self.h/2
+    love.graphics.setColor(0.02,0.01,0.05,0.35)
+    love.graphics.ellipse("fill", cx, self.y+self.h+3, self.w*0.45, 5)
     love.graphics.setColor(self.color)
-    love.graphics.circle("fill", self.x+self.w/2, self.y+self.h/2, self.w/2)
+    love.graphics.circle("fill", cx, cy, self.w/2)
+    love.graphics.setColor(1,0.1,0.85,0.28)
+    love.graphics.circle("line", cx, cy, self.w/2+4)
+    love.graphics.setColor(0.04,0.02,0.08)
+    love.graphics.arc("fill", cx, cy+4, self.w/2-4, 0, math.pi)
     love.graphics.setColor(0.95,0.95,1)
     love.graphics.circle("fill", self.x+11, self.y+13, 5)
     love.graphics.circle("fill", self.x+self.w-11, self.y+13, 5)
-    love.graphics.setColor(0.05,0.02,0.08)
+    love.graphics.setColor(0.1,0.95,1)
     love.graphics.circle("fill", self.x+11, self.y+13, 2)
     love.graphics.circle("fill", self.x+self.w-11, self.y+13, 2)
     love.graphics.setColor(1,1,1)
     love.graphics.polygon("fill", self.x+7,self.y+2, self.x+13,self.y-12, self.x+18,self.y+3)
     love.graphics.polygon("fill", self.x+self.w-7,self.y+2, self.x+self.w-13,self.y-12, self.x+self.w-18,self.y+3)
+    if self.kind == "red" then
+        love.graphics.setColor(1,0.45,0.05)
+        love.graphics.circle("fill", cx, self.y+26, 5)
+    elseif self.kind == "yellow" then
+        love.graphics.setColor(1,1,0.2,0.45)
+        love.graphics.circle("line", cx, cy, self.w/2+9)
+    end
 end
 
 return Enemies

@@ -9,8 +9,8 @@ function Game.load()
     Game.state = "splash"
     Game.world = nil
     Game.t = 0
-    Game.font = love.graphics.newFont(18)
-    Game.big = love.graphics.newFont(42)
+    Game.font = love.graphics.newFont(22)
+    Game.big = love.graphics.newFont(56)
 end
 
 function Game.startCharacterSelect()
@@ -59,35 +59,38 @@ function Game.update(dt)
 end
 
 function Game.drawMikoPreview(x, y)
-    local bounce = math.sin(Game.t*8)*5
-    love.graphics.setColor(0.1,0.9,1,0.35); love.graphics.circle("line", x, y+bounce, 38)
-    love.graphics.setColor(1,1,1); love.graphics.rectangle("fill", x-14,y-18+bounce,28,36)
-    love.graphics.setColor(0.9,0.05,0.12); love.graphics.rectangle("fill", x-18,y+10+bounce,36,40)
-    love.graphics.setColor(0.04,0.03,0.08); love.graphics.circle("fill", x,y-24+bounce,18)
+    local bounce = math.sin(Game.t*8)*7
+    love.graphics.setColor(0.1,0.9,1,0.45); love.graphics.circle("line", x, y+bounce, 58)
+    love.graphics.setColor(1,0.1,0.85,0.22); love.graphics.circle("line", x, y+bounce, 70)
+    love.graphics.setColor(1,1,1); love.graphics.rectangle("fill", x-22,y-28+bounce,44,54,5,5)
+    love.graphics.setColor(0.9,0.05,0.12); love.graphics.polygon("fill", x-30,y+20+bounce, x+30,y+20+bounce, x+22,y+76+bounce, x-22,y+76+bounce)
+    love.graphics.setColor(0.04,0.03,0.08); love.graphics.circle("fill", x,y-38+bounce,26)
+    love.graphics.setColor(1,0.1,0.2); love.graphics.polygon("fill", x-24,y-54+bounce, x-6,y-36+bounce, x-38,y-36+bounce); love.graphics.polygon("fill", x+24,y-54+bounce, x+6,y-36+bounce, x+38,y-36+bounce)
 end
 
 function Game.draw()
     love.graphics.setFont(Game.font)
     if Game.state == "playing" and Game.world then Game.world:draw(); return end
+    local w, h = Config.window.width, Config.window.height
     love.graphics.clear(0.015,0.015,0.07)
     love.graphics.setColor(0.1,0.8,1,0.4)
-    for i=1,16 do love.graphics.line(0,i*40 + math.sin(Game.t+i)*8,960,i*40 + math.cos(Game.t+i)*8) end
+    for i=1,22 do love.graphics.line(0,i*42 + math.sin(Game.t+i)*10,w,i*42 + math.cos(Game.t+i)*10) end
     love.graphics.setColor(1,1,1)
     if Game.state == "splash" then
         love.graphics.setFont(Game.big)
-        love.graphics.printf("NEON MIKO",0,150,960,"center")
+        love.graphics.printf("NEON MIKO",0,210,w,"center")
         love.graphics.setFont(Game.font)
-        love.graphics.printf("Oni Gate Prototype",0,210,960,"center")
-        love.graphics.printf("Press ENTER or gamepad START",0,300,960,"center")
-        love.graphics.printf("Press C for config",0,335,960,"center")
+        love.graphics.printf("Oni Gate Prototype",0,285,w,"center")
+        love.graphics.printf("Press ENTER or gamepad START",0,420,w,"center")
+        love.graphics.printf("Press C for config",0,462,w,"center")
     elseif Game.state == "select" then
-        love.graphics.setFont(Game.big); love.graphics.printf("SELECT CHARACTER",0,70,960,"center")
-        Game.drawMikoPreview(480,255)
+        love.graphics.setFont(Game.big); love.graphics.printf("SELECT CHARACTER",0,86,w,"center")
+        Game.drawMikoPreview(w/2,365)
         love.graphics.setFont(Game.font)
-        love.graphics.printf("Miko Shrine Priestess",0,340,960,"center")
-        love.graphics.printf("Weapons: Gohei prayer stick + Ofuda prayer paper",0,370,960,"center")
-        love.graphics.printf("Press ENTER or gamepad A",0,425,960,"center")
-        love.graphics.printf("Press C for config",0,455,960,"center")
+        love.graphics.printf("Miko Shrine Priestess",0,505,w,"center")
+        love.graphics.printf("Weapons: Gohei prayer stick + Ofuda prayer paper",0,542,w,"center")
+        love.graphics.printf("Press ENTER or gamepad A",0,620,w,"center")
+        love.graphics.printf("Press C for config",0,658,w,"center")
     elseif Game.state == "config" then
         Game.drawConfig()
     end
@@ -95,23 +98,24 @@ end
 
 function Game.drawConfig()
     local items = Game.configItems()
-    love.graphics.setFont(Game.big); love.graphics.printf("CONFIG",0,48,960,"center")
+    local w = Config.window.width
+    love.graphics.setFont(Game.big); love.graphics.printf("CONFIG",0,70,w,"center")
     love.graphics.setFont(Game.font)
-    love.graphics.printf("Up/Down: choose   Enter: edit/toggle   Esc/Backspace: back",0,104,960,"center")
-    if Game.waitingForKey then love.graphics.printf("Press a new key for " .. Game.waitingForKey.label .. " (Esc cancels)",0,132,960,"center") end
-    local y = 170
+    love.graphics.printf("Up/Down: choose   Enter: edit/toggle   Esc/Backspace: back",0,140,w,"center")
+    if Game.waitingForKey then love.graphics.printf("Press a new key for " .. Game.waitingForKey.label .. " (Esc cancels)",0,178,w,"center") end
+    local y = 230
     for i, item in ipairs(items) do
         local selected = i == Game.configIndex
         love.graphics.setColor(selected and 1 or 0.75, selected and 1 or 0.75, selected and 0.2 or 0.75)
         local value = ""
         if item.kind == "control" then value = table.concat(Config.controls.keyboard[item.action] or {}, ", ")
         elseif item.kind == "fullscreen" then value = Config.display.fullscreen and "Fullscreen" or "Windowed" end
-        love.graphics.printf((selected and "> " or "  ") .. item.label, 240, y, 250, "left")
-        love.graphics.printf(value, 500, y, 220, "left")
-        y = y + 34
+        love.graphics.printf((selected and "> " or "  ") .. item.label, 270, y, 280, "left")
+        love.graphics.printf(value, 570, y, 260, "left")
+        y = y + 42
     end
     love.graphics.setColor(1,1,1)
-    love.graphics.printf("Keyboard controls are remapped at runtime. Gamepad defaults remain active.",0,500,960,"center")
+    love.graphics.printf("Keyboard controls are remapped at runtime. Gamepad defaults remain active.",0,700,w,"center")
 end
 
 function Game.activateConfigItem()

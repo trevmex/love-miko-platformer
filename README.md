@@ -37,6 +37,7 @@ Gamepad defaults:
 
 ## Implemented prototype features
 
+- 1024x768 default presentation
 - Splash screen
 - Config screen with keyboard remapping and fullscreen/windowed toggle
 - Character select screen with only the miko available
@@ -52,7 +53,8 @@ Gamepad defaults:
   - Blue jumping oni
   - Red fire-spitting oni
   - Yellow floating swoop oni
-- Generated neon/vector-style graphics in code
+- Higher-detail generated neon/vector-style graphics in code
+- High-resolution Miko sprite-map draft in `assets/sprites/miko_sprite_map.png`
 - Generated Japanese-inspired pentatonic background music and SFX in code
 - Modular level file: `src/levels/level1.lua`
 - Easy asset folders: `assets/sprites`, `assets/sounds`, `assets/music`

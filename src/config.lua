@@ -1,6 +1,6 @@
 local Config = {}
 
-Config.window = { width = 960, height = 540 }
+Config.window = { width = 1024, height = 768 }
 Config.display = { fullscreen = false }
 Config.gravity = 1500
 Config.levelTimer = 300

@@ -53,7 +53,7 @@ function Player:update(dt, world)
 
     self.vy = self.vy + Config.gravity * dt
     world:moveActor(self, dt)
-    if self.y > 700 then self:hurt() end
+    if self.y > Config.window.height + 160 then self:hurt() end
 end
 
 function Player:hurt()
@@ -66,21 +66,41 @@ end
 
 function Player:draw()
     local bounce = math.sin(self.idleTime * 8) * 3
+    local aura = 0.55 + math.sin(self.idleTime * 5) * 0.12
     local x, y = self.x, self.y + bounce
     if self.invuln > 0 and math.floor(self.invuln * 12) % 2 == 0 then return end
-    love.graphics.setColor(0.1, 0.95, 1, 0.45)
-    love.graphics.circle("line", x + self.w/2, y + 12, 24)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("fill", x+8, y+8, 18, 26) -- white kosode
+    love.graphics.setColor(0.02, 0.04, 0.09, 0.35)
+    love.graphics.ellipse("fill", x + self.w/2, y + self.h + 3, 22, 5)
+    love.graphics.setColor(0.1, 0.95, 1, aura)
+    love.graphics.circle("line", x + self.w/2, y + 14, 28)
+    love.graphics.setColor(1, 0.1, 0.85, 0.22)
+    love.graphics.circle("line", x + self.w/2, y + 14, 33)
+    love.graphics.setColor(0.08, 0.02, 0.15)
+    love.graphics.rectangle("fill", x+5, y+6, 24, 29, 3, 3)
+    love.graphics.setColor(1, 0.98, 0.9)
+    love.graphics.rectangle("fill", x+8, y+8, 18, 26, 3, 3) -- white kosode
+    love.graphics.setColor(0.7, 0.98, 1)
+    love.graphics.rectangle("fill", x+9, y+12, 16, 3)
     love.graphics.setColor(0.9, 0.05, 0.15)
-    love.graphics.rectangle("fill", x+5, y+30, 24, 25) -- red hakama
-    love.graphics.setColor(0.05, 0.05, 0.08)
-    love.graphics.circle("fill", x+17, y+8, 12) -- hair
+    love.graphics.polygon("fill", x+4,y+30, x+30,y+30, x+26,y+56, x+8,y+56) -- red hakama
+    love.graphics.setColor(0.18, 0.03, 0.12)
+    love.graphics.line(x+17,y+32, x+17,y+55)
+    love.graphics.setColor(0.03, 0.025, 0.06)
+    love.graphics.circle("fill", x+17, y+8, 13) -- hair
+    love.graphics.rectangle("fill", x+8, y+9, 18, 8)
+    love.graphics.setColor(0.1, 0.95, 1)
+    love.graphics.rectangle("fill", x+12, y+5, 3, 2)
+    love.graphics.rectangle("fill", x+20, y+5, 3, 2)
     love.graphics.setColor(1, 0.1, 0.2)
-    love.graphics.polygon("fill", x+5, y-6, x+13, y+5, x+0, y+4)
-    love.graphics.polygon("fill", x+29, y-6, x+21, y+5, x+34, y+4)
+    love.graphics.polygon("fill", x+4, y-7, x+13, y+5, x-2, y+4)
+    love.graphics.polygon("fill", x+30, y-7, x+21, y+5, x+36, y+4)
+    love.graphics.setColor(1, 0.1, 0.85)
+    love.graphics.rectangle("fill", x+15, y-3, 4, 5)
     love.graphics.setColor(1, 0.95, 0.2)
-    love.graphics.rectangle("fill", x + (self.dir > 0 and 29 or -15), y+24, 20, 4) -- gohei wand
+    love.graphics.rectangle("fill", x + (self.dir > 0 and 28 or -18), y+23, 24, 4) -- gohei wand
+    love.graphics.setColor(1, 0.98, 0.88)
+    love.graphics.rectangle("fill", x + (self.dir > 0 and 48 or -22), y+17, 6, 13)
+    love.graphics.rectangle("fill", x + (self.dir > 0 and 55 or -29), y+19, 6, 11)
     love.graphics.setColor(1, 1, 1)
 end
 

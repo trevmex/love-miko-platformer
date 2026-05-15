@@ -107,41 +107,43 @@ function World:updateEnemyShots(dt)
 end
 
 function World:drawBackground()
-    love.graphics.clear(0.02, 0.02, 0.08)
-    for i=0,60 do
-        local x = (i*173 - self.cameraX*0.25) % 1000
-        love.graphics.setColor(0.3,0.8,1,0.35)
-        love.graphics.points(x, 35 + (i*47)%220)
+    love.graphics.clear(0.015, 0.015, 0.06)
+    for i=0,95 do
+        local x = (i*173 - self.cameraX*0.22) % Config.window.width
+        love.graphics.setColor(0.3,0.8,1,0.2 + (i % 3) * 0.05)
+        love.graphics.points(x, 35 + (i*47)%(Config.window.height*0.48))
     end
     love.graphics.setColor(0.08,0.12,0.22)
-    for x=-100, self.level.width, 220 do love.graphics.rectangle("fill", x-self.cameraX*0.3, 300, 130, 220) end
+    for x=-100, self.level.width, 220 do love.graphics.rectangle("fill", x-self.cameraX*0.3, 430, 130, 310) end
+    love.graphics.setColor(0.9,0.05,0.35,0.18)
+    for x=-160, self.level.width, 360 do love.graphics.rectangle("line", x-self.cameraX*0.18, 260, 160, 360) end
 end
 
 function World:draw()
     self:drawBackground()
     love.graphics.push(); love.graphics.translate(-math.floor(self.cameraX), 0)
     for _, d in ipairs(self.level.decorations) do self:drawDecoration(d) end
-    love.graphics.setColor(0.2,0.9,1)
-    for _, p in ipairs(self.platforms) do love.graphics.rectangle("fill", p.x,p.y,p.w,p.h); love.graphics.setColor(0.04,0.08,0.12); love.graphics.rectangle("line", p.x,p.y,p.w,p.h); love.graphics.setColor(0.2,0.9,1) end
+    love.graphics.setColor(0.04,0.1,0.15)
+    for _, p in ipairs(self.platforms) do love.graphics.rectangle("fill", p.x,p.y,p.w,p.h); love.graphics.setColor(0.2,0.9,1); love.graphics.rectangle("fill", p.x,p.y,p.w,5); love.graphics.setColor(1,0.1,0.8,0.35); love.graphics.rectangle("line", p.x,p.y,p.w,p.h); love.graphics.setColor(0.04,0.1,0.15) end
     love.graphics.setColor(1,0.1,0.8)
-    for _, p in ipairs(self.movingPlatforms) do love.graphics.rectangle("fill", p.x,p.y,p.w,p.h) end
+    for _, p in ipairs(self.movingPlatforms) do love.graphics.rectangle("fill", p.x,p.y,p.w,p.h); love.graphics.setColor(0.2,0.9,1); love.graphics.rectangle("line", p.x-2,p.y-2,p.w+4,p.h+4); love.graphics.setColor(1,0.1,0.8) end
     for _, e in ipairs(self.enemies) do if not e.dead then e:draw() end end
     for _, a in ipairs(self.attacks) do
-        if a.type=="ofuda" then love.graphics.setColor(1,1,0.8); love.graphics.rectangle("fill", a.x,a.y,a.w,a.h); love.graphics.setColor(1,0,0); love.graphics.print("札", a.x+2, a.y-7)
-        else love.graphics.setColor(1,1,1,0.4); love.graphics.rectangle("fill", a.x,a.y,a.w,a.h) end
+        if a.type=="ofuda" then love.graphics.setColor(0.1,0.95,1,0.35); love.graphics.rectangle("fill", a.x-4,a.y-3,a.w+8,a.h+6); love.graphics.setColor(1,1,0.8); love.graphics.rectangle("fill", a.x,a.y,a.w,a.h); love.graphics.setColor(1,0,0); love.graphics.print("札", a.x+2, a.y-7)
+        else love.graphics.setColor(1,1,1,0.35); love.graphics.rectangle("fill", a.x,a.y,a.w,a.h); love.graphics.setColor(0.1,0.95,1,0.45); love.graphics.rectangle("line", a.x-2,a.y-2,a.w+4,a.h+4) end
     end
-    for _, f in ipairs(self.enemyShots) do love.graphics.setColor(1,0.25,0.02); love.graphics.ellipse("fill", f.x,f.y,12,7) end
+    for _, f in ipairs(self.enemyShots) do love.graphics.setColor(1,0.1,0.85,0.25); love.graphics.ellipse("fill", f.x-8,f.y,22,10); love.graphics.setColor(1,0.25,0.02); love.graphics.ellipse("fill", f.x,f.y,12,7); love.graphics.setColor(1,0.9,0.1); love.graphics.ellipse("fill", f.x+4,f.y,5,3) end
     self.player:draw()
     love.graphics.pop()
     love.graphics.setColor(1,1,1)
     love.graphics.print("Score "..self.score, 16, 12)
-    love.graphics.print("Time "..math.max(0, math.ceil(self.timer)), 430, 12)
-    love.graphics.print("HP "..self.player.hp, 850, 12)
-    if self.startBanner > 0 then love.graphics.setColor(1,1,0); love.graphics.printf("START", 0, 210, 960, "center") end
-    if self.win then love.graphics.printf("TEMPLE BELL RINGS! LEVEL CLEAR", 0, 230, 960, "center") end
+    love.graphics.print("Time "..math.max(0, math.ceil(self.timer)), Config.window.width/2 - 60, 12)
+    love.graphics.print("HP "..self.player.hp, Config.window.width - 110, 12)
+    if self.startBanner > 0 then love.graphics.setColor(1,1,0); love.graphics.printf("START", 0, Config.window.height/2 - 40, Config.window.width, "center") end
+    if self.win then love.graphics.printf("TEMPLE BELL RINGS! LEVEL CLEAR", 0, Config.window.height/2 - 20, Config.window.width, "center") end
     if self.over then
-        love.graphics.printf("GAME OVER", 0, 230, 960, "center")
-        love.graphics.printf("Press R, ENTER, gamepad START, or A to restart", 0, 265, 960, "center")
+        love.graphics.printf("GAME OVER", 0, Config.window.height/2 - 20, Config.window.width, "center")
+        love.graphics.printf("Press R, ENTER, gamepad START, or A to restart", 0, Config.window.height/2 + 22, Config.window.width, "center")
     end
 end
 

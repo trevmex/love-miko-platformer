@@ -21,7 +21,7 @@ love = {
     sound = {},
     audio = {}
 }
-for _, name in ipairs({"setColor","circle","rectangle","polygon","setFont","printf","clear","line","points","push","pop","translate","ellipse","print","setDefaultFilter"}) do
+for _, name in ipairs({"setColor","circle","rectangle","polygon","setFont","printf","clear","line","points","push","pop","translate","ellipse","arc","print","setDefaultFilter"}) do
     love.graphics[name] = function(...) loveState.lastGraphics = {name, ...} end
 end
 love.graphics.newFont = function(size) return {size=size} end
@@ -137,7 +137,7 @@ test("player update handles movement, joy axis, jump, attacks, damage, and draw"
     loveState.keys.a = true; Input.keypressed(","); Input.keypressed("."); Input.keypressed("/"); p.onGround = true; p:update(0.1, world)
     assertTrue(world.melee and world.ofuda); assertEq(p.dir, -1)
     resetInput(); loveState.joysticks = {{isGamepad=function() return true end, getGamepadAxis=function() return 0.8 end}}; p:update(0.1, world); assertEq(p.dir, 1)
-    p.y = 701; p.invuln = 0; p:update(0.1, world); assertTrue(p.hp < 3)
+    p.y = Config.window.height + 161; p.invuln = 0; p:update(0.1, world); assertTrue(p.hp < 3)
     p.invuln = 1; assertTrue(not p:hurt()); p.invuln = 0; p.hp = 1; assertTrue(p:hurt()); assertTrue(not p.alive)
     p.invuln = 0; p:draw(); p.invuln = 1.0; p:draw()
 end)
