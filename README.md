@@ -14,6 +14,8 @@ love .
 lua tests/test_runner.lua
 ```
 
+The test runner includes an in-repo line coverage gate and fails unless executable source functions remain at 100% coverage.
+
 ## Controls
 
 Keyboard defaults, editable in `src/config.lua`:
@@ -22,17 +24,21 @@ Keyboard defaults, editable in `src/config.lua`:
 - `,`: jump
 - `.`: short-range gohei prayer-stick attack
 - `/`: ranged ofuda prayer-paper attack
-- `Enter`: start/select
+- `Enter`: start/select/restart
+- `R`: restart after game over
+- `C`: open config screen
 
 Gamepad defaults:
-- `A`: jump/select
+- `A`: jump/select/restart after game over
 - `B`: melee
 - `Right Trigger`: ranged
-- `Start`: start
+- `Start`: start/restart after game over
+- `Back`: open config screen
 
 ## Implemented prototype features
 
 - Splash screen
+- Config screen with keyboard remapping and fullscreen/windowed toggle
 - Character select screen with only the miko available
 - SF2-style idle bounce
 - START banner before player control
@@ -68,6 +74,7 @@ src/
 tests/test_runner.lua
 assets/
   sprites/
+  backgrounds/
   sounds/
   music/
 ```

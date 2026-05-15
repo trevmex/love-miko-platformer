@@ -1,0 +1,38 @@
+# LÖVE packaged builds
+*.love
+*.zip
+*.app
+*.exe
+*.dll
+*.dylib
+*.so
+
+# LuaRocks / local Lua deps
+.luarocks/
+lua_modules/
+luarocks/
+*.rock
+*.rockspec.local
+
+# Lua coverage and test output
+luacov.stats.out
+luacov.report.out
+coverage/
+
+# LÖVE runtime save data sometimes copied into repo
+*/neon_miko_oni_gate/
+
+# Logs and crash dumps
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Editor/IDE folders
+.vscode/
+.idea/
+
+# OS metadata
+desktop.ini

@@ -51,8 +51,11 @@ lua tests/test_runner.lua
 
 ## Testing expectations
 
-- Add or update tests in `tests/test_runner.lua` for logic/data changes that can run without LÖVE.
-- Keep tests compatible with plain `lua tests/test_runner.lua`; do not require launching LÖVE for test coverage.
+- Maintain **100% code coverage** for gameplay, configuration, input, level data, and utility code.
+- Add or update tests in `tests/test_runner.lua` for every logic/data change that can run without LÖVE.
+- Keep tests compatible with plain `lua tests/test_runner.lua`; do not require launching LÖVE for automated coverage.
+- Mock LÖVE APIs in tests when needed instead of skipping branches in draw, audio, window, or input code.
+- Do not merge or commit code that lowers coverage; add focused tests first.
 - For visual/audio-only changes, manually inspect with `love .` when possible and describe what was checked.
 - If you cannot run a command, say why and what should be run next.
 

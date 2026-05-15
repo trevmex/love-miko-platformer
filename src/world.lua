@@ -58,6 +58,7 @@ function World:update(dt)
     self.audio:startMusic()
     self.startBanner = math.max(0, self.startBanner - dt)
     if self.startBanner > 0 then return end
+    if self.win or self.over then return end
     self.timer = self.timer - dt
     if self.timer <= 0 then self.over = true end
 
@@ -138,7 +139,10 @@ function World:draw()
     love.graphics.print("HP "..self.player.hp, 850, 12)
     if self.startBanner > 0 then love.graphics.setColor(1,1,0); love.graphics.printf("START", 0, 210, 960, "center") end
     if self.win then love.graphics.printf("TEMPLE BELL RINGS! LEVEL CLEAR", 0, 230, 960, "center") end
-    if self.over then love.graphics.printf("GAME OVER", 0, 230, 960, "center") end
+    if self.over then
+        love.graphics.printf("GAME OVER", 0, 230, 960, "center")
+        love.graphics.printf("Press R, ENTER, gamepad START, or A to restart", 0, 265, 960, "center")
+    end
 end
 
 function World:drawDecoration(d)
